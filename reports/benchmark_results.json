@@ -1,0 +1,32 @@
+{
+  "Vector+LLaMA": {
+    "scores": {
+      "faithfulness": 0.96,
+      "answer_relevancy": 0.74,
+      "context_relevancy": 0.92,
+      "completeness": 0.6,
+      "average": 0.805
+    },
+    "avg_latency_ms": 526.0
+  },
+  "BM25+LLaMA": {
+    "scores": {
+      "faithfulness": 0.92,
+      "answer_relevancy": 0.88,
+      "context_relevancy": 0.92,
+      "completeness": 0.66,
+      "average": 0.845
+    },
+    "avg_latency_ms": 446.3
+  },
+  "Hybrid+LLaMA": {
+    "scores": {
+      "faithfulness": 0.88,
+      "answer_relevancy": 0.84,
+      "context_relevancy": 0.84,
+      "completeness": 0.6,
+      "average": 0.79
+    },
+    "avg_latency_ms": 3436.4
+  }
+}

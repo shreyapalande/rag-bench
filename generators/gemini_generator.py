@@ -1,5 +1,6 @@
 # generators/gemini_generator.py
 import os
+from time import time
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
@@ -27,21 +28,28 @@ QUESTION:
 
 ANSWER:"""
 
-        response = self.client.models.generate_content(
-            model=self.model_name,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                temperature=0.1,
-                max_output_tokens=1024
-            )
-        )
-
-        answer = response.text
-        tokens = len(prompt.split()) + len(answer.split())
-
-        return GenerationResult(
-            answer=answer,
-            latency_ms=0,
-            tokens_used=tokens,
-            metadata={"model": self.model_name}
-        )
+        for attempt in range(3):
+            try:
+                response = self.client.models.generate_content(
+                    model=self.model_name,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        temperature=0.1,
+                        max_output_tokens=1024
+                    )
+                )
+                answer = response.text
+                tokens = len(prompt.split()) + len(answer.split())
+                return GenerationResult(
+                    answer=answer,
+                    latency_ms=0,
+                    tokens_used=tokens,
+                    metadata={"model": self.model_name}
+                )
+            except Exception as e:
+                if "429" in str(e) and attempt < 2:
+                    wait = 20 * (attempt + 1)
+                    print(f"  Gemini rate limited — waiting {wait}s...")
+                    time.sleep(wait)
+                else:
+                    raise

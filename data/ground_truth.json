@@ -1,0 +1,22 @@
+[
+    {
+        "question": "What is the difference between BERT and GPT?",
+        "ground_truth": "BERT and GPT differ in their training objectives and attention mechanisms. GPT uses autoregressive language modeling with unidirectional causal attention, predicting the next token based on previous tokens. BERT uses masked language modeling (MLM) where it predicts randomly masked tokens using bidirectional context, plus next sentence prediction (NSP). BERT's bidirectional attention allows it to understand words based on both left and right context, making it better for understanding tasks, while GPT excels at text generation."
+    },
+    {
+        "question": "How does key value caching improve transformer inference?",
+        "ground_truth": "Key-value caching improves transformer inference by storing computed keys and values for already processed tokens during autoregressive generation. This avoids recomputing attention scores for past tokens, reducing computation from O(n2) to O(n) per token where n is sequence length. The cache is initialized empty and updated incrementally with each new token's keys and values."
+    },
+    {
+        "question": "What are the trade-offs between dense and sparse retrieval?",
+        "ground_truth": "Sparse retrieval excels at precise keyword-based matching and provides interpretability but may miss semantic relationships. Dense retrieval captures semantic meaning and context making it effective for conceptually related content but is less interpretable. Hybrid approaches combine both to balance precision with semantic understanding."
+    },
+    {
+        "question": "What is the attention mechanism in transformers?",
+        "ground_truth": "The attention mechanism allows models to weigh the importance of different tokens when processing sequences. It computes similarity scores between query, key, and value vectors using scaled dot products. The formula is Attention(Q,K,V) = softmax(QK^T / sqrt(dk))V. Multi-head attention runs multiple attention operations in parallel to capture different aspects of relationships."
+    },
+    {
+        "question": "What is the difference between top-k and top-p sampling?",
+        "ground_truth": "Top-k sampling selects from the k most probable tokens for random sampling ensuring controlled diversity. Top-p nucleus sampling chooses tokens whose cumulative probability exceeds threshold p adapting dynamically to context. Top-p is more flexible and produces more varied yet coherent outputs compared to top-k."
+    }
+]
