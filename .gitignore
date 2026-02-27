@@ -1,0 +1,30 @@
+# Environment variables
+.env
+
+# Generated data files
+data/faiss_index.bin
+data/chunks.pkl
+data/processed_chunks.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
