@@ -22,11 +22,21 @@ class BM25Retriever(BaseRetriever):
         return [t for t in tokens if t]
 
     def setup(self, chunks: list) -> None:
-        """Tokenize all chunks and build BM25 index."""
+        """Tokenize all chunks and build BM25 index, recording per-phase timing."""
+        import time
         self.chunks = chunks
+
+        # Phase 1: tokenization
         print(f"[{self.name}] Tokenizing {len(chunks)} chunks...")
+        t0 = time.perf_counter()
         tokenized = [self._tokenize(c.text) for c in chunks]
+        self.setup_metrics.tokenizing_ms = (time.perf_counter() - t0) * 1000
+
+        # Phase 2: BM25 index build
+        t0 = time.perf_counter()
         self.bm25 = BM25Okapi(tokenized)
+        self.setup_metrics.indexing_ms = (time.perf_counter() - t0) * 1000
+
         print(f"[{self.name}] BM25 index built")
 
     def retrieve(self, query: str, top_k: int = 5) -> list[str]:

@@ -1,0 +1,170 @@
+[
+  {
+    "combo": "Vector+LLaMA",
+    "setup_metrics": {
+      "total_ms": 10341.7,
+      "embedding_ms": 10336.4,
+      "tokenizing_ms": 0.0,
+      "indexing_ms": 2.8,
+      "memory_peak_mb": 299.03,
+      "storage_mb": 0.0
+    },
+    "latency": {
+      "avg_retrieval_ms": 34.0,
+      "avg_generation_ms": 463.4,
+      "avg_total_ms": 497.4,
+      "avg_tokens": 995.4
+    },
+    "quality": {
+      "faithfulness": 0.9,
+      "answer_relevancy": 0.94,
+      "context_relevancy": 0.92,
+      "completeness": 0.74,
+      "average": 0.875
+    },
+    "per_question": [
+      {
+        "question": "What is the difference between BERT and GPT?",
+        "retrieval_ms": 29.4,
+        "generation_ms": 1075.3,
+        "tokens": 1050
+      },
+      {
+        "question": "How does key value caching improve transformer inference?",
+        "retrieval_ms": 19.5,
+        "generation_ms": 327.5,
+        "tokens": 978
+      },
+      {
+        "question": "What are the trade-offs between dense and sparse retrieval?",
+        "retrieval_ms": 59.8,
+        "generation_ms": 462.5,
+        "tokens": 968
+      },
+      {
+        "question": "What is the attention mechanism in transformers?",
+        "retrieval_ms": 40.0,
+        "generation_ms": 227.7,
+        "tokens": 983
+      },
+      {
+        "question": "What is the difference between top-k and top-p sampling?",
+        "retrieval_ms": 21.4,
+        "generation_ms": 223.8,
+        "tokens": 998
+      }
+    ]
+  },
+  {
+    "combo": "BM25+LLaMA",
+    "setup_metrics": {
+      "total_ms": 36.7,
+      "embedding_ms": 0.0,
+      "tokenizing_ms": 20.2,
+      "indexing_ms": 14.7,
+      "memory_peak_mb": 0.74,
+      "storage_mb": 0.0
+    },
+    "latency": {
+      "avg_retrieval_ms": 1.7,
+      "avg_generation_ms": 4509.5,
+      "avg_total_ms": 4511.2,
+      "avg_tokens": 983.8
+    },
+    "quality": {
+      "faithfulness": 0.86,
+      "answer_relevancy": 0.82,
+      "context_relevancy": 0.9,
+      "completeness": 0.58,
+      "average": 0.79
+    },
+    "per_question": [
+      {
+        "question": "What is the difference between BERT and GPT?",
+        "retrieval_ms": 2.3,
+        "generation_ms": 2660.4,
+        "tokens": 1043
+      },
+      {
+        "question": "How does key value caching improve transformer inference?",
+        "retrieval_ms": 1.7,
+        "generation_ms": 5741.6,
+        "tokens": 969
+      },
+      {
+        "question": "What are the trade-offs between dense and sparse retrieval?",
+        "retrieval_ms": 1.1,
+        "generation_ms": 3374.2,
+        "tokens": 903
+      },
+      {
+        "question": "What is the attention mechanism in transformers?",
+        "retrieval_ms": 1.5,
+        "generation_ms": 5422.5,
+        "tokens": 983
+      },
+      {
+        "question": "What is the difference between top-k and top-p sampling?",
+        "retrieval_ms": 1.7,
+        "generation_ms": 5348.8,
+        "tokens": 1021
+      }
+    ]
+  },
+  {
+    "combo": "Hybrid+LLaMA",
+    "setup_metrics": {
+      "total_ms": 9054.7,
+      "embedding_ms": 9025.7,
+      "tokenizing_ms": 15.0,
+      "indexing_ms": 12.6,
+      "memory_peak_mb": 15.54,
+      "storage_mb": 0.0
+    },
+    "latency": {
+      "avg_retrieval_ms": 33.9,
+      "avg_generation_ms": 4979.5,
+      "avg_total_ms": 5013.4,
+      "avg_tokens": 997.2
+    },
+    "quality": {
+      "faithfulness": 0.9,
+      "answer_relevancy": 0.92,
+      "context_relevancy": 0.9,
+      "completeness": 0.76,
+      "average": 0.87
+    },
+    "per_question": [
+      {
+        "question": "What is the difference between BERT and GPT?",
+        "retrieval_ms": 21.8,
+        "generation_ms": 4551.6,
+        "tokens": 1045
+      },
+      {
+        "question": "How does key value caching improve transformer inference?",
+        "retrieval_ms": 50.0,
+        "generation_ms": 5457.0,
+        "tokens": 994
+      },
+      {
+        "question": "What are the trade-offs between dense and sparse retrieval?",
+        "retrieval_ms": 32.4,
+        "generation_ms": 4711.3,
+        "tokens": 947
+      },
+      {
+        "question": "What is the attention mechanism in transformers?",
+        "retrieval_ms": 33.9,
+        "generation_ms": 4542.7,
+        "tokens": 979
+      },
+      {
+        "question": "What is the difference between top-k and top-p sampling?",
+        "retrieval_ms": 31.5,
+        "generation_ms": 5634.8,
+        "tokens": 1021
+      }
+    ]
+  }
+]

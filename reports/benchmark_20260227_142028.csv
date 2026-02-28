@@ -1,0 +1,4 @@
+combo,retriever,generator,setup_total_ms,setup_embedding_ms,setup_tokenizing_ms,setup_indexing_ms,setup_memory_peak_mb,avg_retrieval_ms,avg_generation_ms,avg_total_ms,avg_tokens,faithfulness,answer_relevancy,context_relevancy,completeness,average
+Vector+LLaMA,Vector,LLaMA,16028.8,16018.9,0.0,4.3,1.04,156.2,903.1,1059.3,1005.6,0.9,0.94,0.92,0.74,0.875
+BM25+LLaMA,BM25,LLaMA,187.5,0.0,143.2,40.2,1.91,3.1,4174.9,4177.9,983.0,0.86,0.88,0.92,0.6,0.815
+Hybrid+LLaMA,Hybrid,LLaMA,18376.5,18179.1,147.9,43.6,1.93,57.7,5043.1,5100.8,994.8,0.9,0.94,0.88,0.78,0.875

@@ -28,12 +28,23 @@ class HybridRetriever(BaseRetriever):
         self.chunks = []
 
     def setup(self, chunks: list) -> None:
-        """Setup both retrievers."""
+        """Setup both sub-retrievers and aggregate their phase metrics."""
         self.chunks = chunks
+
         print(f"[{self.name}] Setting up vector retriever...")
         self.vector.setup(chunks)
+
         print(f"[{self.name}] Setting up BM25 retriever...")
         self.bm25.setup(chunks)
+
+        # Aggregate phase metrics from both sub-retrievers.
+        # total_ms and memory_peak_mb are set by the outer setup_and_time().
+        self.setup_metrics.embedding_ms = self.vector.setup_metrics.embedding_ms
+        self.setup_metrics.indexing_ms = (
+            self.vector.setup_metrics.indexing_ms + self.bm25.setup_metrics.indexing_ms
+        )
+        self.setup_metrics.tokenizing_ms = self.bm25.setup_metrics.tokenizing_ms
+
         print(f"[{self.name}] Hybrid setup complete")
 
     def retrieve(self, query: str, top_k: int = 5) -> list[str]:

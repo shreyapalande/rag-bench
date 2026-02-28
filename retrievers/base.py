@@ -1,8 +1,9 @@
 # retrievers/base.py
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Any
 import time
+
+from utils.profiler import SetupMetrics, MemoryTracker
 
 @dataclass
 class RetrievalResult:
@@ -18,17 +19,23 @@ class BaseRetriever(ABC):
 
     def __init__(self, name: str):
         self.name = name
-        self.setup_time_ms: float = 0.0
+        self.setup_metrics: SetupMetrics = SetupMetrics()
         self._is_setup: bool = False
 
-    def setup_and_time(self, chunks: list) -> float:
-        """Setup retriever and record setup time."""
-        start = time.perf_counter()
-        self.setup(chunks)
-        self.setup_time_ms = (time.perf_counter() - start) * 1000
+    def setup_and_time(self, chunks: list) -> SetupMetrics:
+        """Setup retriever, record per-phase timing and peak memory."""
+        with MemoryTracker() as mem:
+            start = time.perf_counter()
+            self.setup(chunks)
+            self.setup_metrics.total_ms = (time.perf_counter() - start) * 1000
+        self.setup_metrics.memory_peak_mb = mem.peak_mb
         self._is_setup = True
-        print(f"[{self.name}] Setup complete in {self.setup_time_ms:.1f}ms")
-        return self.setup_time_ms
+        print(
+            f"[{self.name}] Setup complete — "
+            f"{self.setup_metrics.total_ms:.0f}ms | "
+            f"{self.setup_metrics.memory_peak_mb:.1f}MB peak"
+        )
+        return self.setup_metrics
 
     def retrieve_and_time(self, query: str, top_k: int = 5) -> RetrievalResult:
         """Retrieve chunks and record latency."""

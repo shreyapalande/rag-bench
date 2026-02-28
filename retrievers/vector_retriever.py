@@ -19,25 +19,28 @@ class VectorRetriever(BaseRetriever):
         self.chunks = []
 
     def setup(self, chunks: list) -> None:
-        """Embed all chunks and build FAISS index."""
+        """Embed all chunks and build FAISS index, recording per-phase timing."""
+        import time
         self.chunks = chunks
         texts = [c.text for c in chunks]
 
+        # Phase 1: embedding
         print(f"[{self.name}] Embedding {len(texts)} chunks...")
-        embeddings = self.model.encode(
-            texts,
-            show_progress_bar=True,
-            batch_size=32
-        )
+        t0 = time.perf_counter()
+        embeddings = self.model.encode(texts, show_progress_bar=True, batch_size=32)
         embeddings = np.array(embeddings).astype("float32")
+        self.setup_metrics.embedding_ms = (time.perf_counter() - t0) * 1000
 
         # Normalize for cosine similarity
         faiss.normalize_L2(embeddings)
 
-        # Build index
+        # Phase 2: index build
+        t0 = time.perf_counter()
         dim = embeddings.shape[1]
         self.index = faiss.IndexFlatIP(dim)
         self.index.add(embeddings)
+        self.setup_metrics.indexing_ms = (time.perf_counter() - t0) * 1000
+
         print(f"[{self.name}] Indexed {len(texts)} chunks")
 
     def retrieve(self, query: str, top_k: int = 5) -> list[str]:
