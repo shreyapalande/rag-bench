@@ -19,6 +19,7 @@ class ComboResult:
     avg_tokens: float
     judge_scores: dict
     per_question: list[dict] = field(default_factory=list)
+    cache_stats: dict = field(default_factory=dict)  # hits, misses, hit_rate (cache retrievers only)
 
     @property
     def combo(self) -> str:
@@ -123,6 +124,7 @@ class BenchmarkRunner:
                     "retrieval_ms": round(ret_result.latency_ms, 1),
                     "generation_ms": round(gen_result.latency_ms, 1),
                     "tokens": gen_result.tokens_used,
+                    "cache_hit": ret_result.metadata.get("cache_hit"),  # None for non-cache retrievers
                 })
                 print(
                     f"  {ret_name}+{gen_name}: "
@@ -140,6 +142,17 @@ class BenchmarkRunner:
 
             rt = data["retrieval_times"]
             gt = data["generation_times"]
+
+            # Extract cache stats if retriever supports it
+            cache_stats = {}
+            if hasattr(retriever, "cache_hits"):
+                total_queries = retriever.cache_hits + retriever.cache_misses
+                cache_stats = {
+                    "hits": retriever.cache_hits,
+                    "misses": retriever.cache_misses,
+                    "hit_rate": round(retriever.cache_hits / total_queries, 3) if total_queries > 0 else 0.0,
+                }
+
             result = ComboResult(
                 retriever_name=ret_name,
                 generator_name=gen_name,
@@ -150,6 +163,7 @@ class BenchmarkRunner:
                 avg_tokens=sum(data["token_counts"]) / n,
                 judge_scores=avg_score.to_dict(),
                 per_question=data["per_question"],
+                cache_stats=cache_stats,
             )
             self.results.append(result)
             print(

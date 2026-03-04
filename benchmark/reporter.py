@@ -41,6 +41,7 @@ class BenchmarkReporter:
                     "avg_tokens": round(r.avg_tokens, 1),
                 },
                 "quality": r.judge_scores,
+                "cache_stats": r.cache_stats or None,
                 "per_question": r.per_question,
             }
             for r in results
@@ -117,6 +118,23 @@ class BenchmarkReporter:
                     f"| {m.memory_peak_mb:>9.2f} |"
                 )
 
+        # Cache stats section — only shown if any retriever has cache data
+        cache_results = [r for r in by_quality if r.cache_stats]
+        if cache_results:
+            lines += [
+                "\n## Cache Performance\n",
+                f"| {'Combo':<25} | {'Hit Rate':>9} | {'Hits':>6} | {'Misses':>7} |",
+                f"|{'-'*27}|{'-'*11}|{'-'*8}|{'-'*9}|",
+            ]
+            for r in cache_results:
+                c = r.cache_stats
+                lines.append(
+                    f"| {r.combo:<25} "
+                    f"| {c['hit_rate']:>9.1%} "
+                    f"| {c['hits']:>6} "
+                    f"| {c['misses']:>7} |"
+                )
+
         content = "\n".join(lines) + "\n"
         with open(path, "w") as f:
             f.write(content)
@@ -170,3 +188,20 @@ class BenchmarkReporter:
                     f"{m.memory_peak_mb:>6.1f}MB"
                 )
         print("─" * 65)
+
+        cache_results = [r for r in by_quality if r.cache_stats]
+        if cache_results:
+            print("\n" + "─" * 45)
+            print("CACHE PERFORMANCE")
+            print("─" * 45)
+            print(f"{'Combo':<28} {'Hit Rate':>9} {'Hits':>6} {'Misses':>7}")
+            print("─" * 45)
+            for r in cache_results:
+                c = r.cache_stats
+                print(
+                    f"{r.combo:<28} "
+                    f"{c['hit_rate']:>9.1%} "
+                    f"{c['hits']:>6} "
+                    f"{c['misses']:>7}"
+                )
+            print("─" * 45)
