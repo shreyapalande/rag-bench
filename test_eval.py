@@ -10,6 +10,7 @@ from retrievers.bm25_retriever import BM25Retriever
 from retrievers.hybrid_retriever import HybridRetriever
 from retrievers.kv_cache_retriever import KVCacheRetriever
 from retrievers.semantic_cache_retriever import SemanticCacheRetriever
+from retrievers.graph_rag_retriever import GraphRAGRetriever
 from generators.groq_generator import GroqGenerator
 from generators.gemini_generator import GeminiGenerator
 from benchmark.runner import BenchmarkRunner
@@ -31,6 +32,7 @@ ground_truth = {item["question"]: item["ground_truth"] for item in gt_data}
 # ── Setup retrievers (fresh builds → accurate setup metrics) ──────────
 kv_cache = KVCacheRetriever(ttl=3600)
 sem_cache = SemanticCacheRetriever(ttl=3600, similarity_threshold=0.85)
+graph_rag = GraphRAGRetriever(max_hops=2)
 
 retrievers = {
     "Vector":    VectorRetriever(model_name=CONFIG.embedding.model_name),
@@ -38,6 +40,7 @@ retrievers = {
     "Hybrid":    HybridRetriever(rrf_k=CONFIG.benchmark.rrf_k),
     "KVCache":   kv_cache,
     "SemCache":  sem_cache,
+    "GraphRAG":  graph_rag,
 }
 
 print("Setting up retrievers...")
